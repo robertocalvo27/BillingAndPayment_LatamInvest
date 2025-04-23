@@ -6,6 +6,7 @@ import InvoicesPage from './pages/InvoicesPage';
 import InvoiceDetailPage from './pages/InvoiceDetailPage';
 import PaymentsPage from './pages/PaymentsPage';
 import ReportsPage from './components/reports/ReportsPage';
+import ProfitLossReport from './components/reports/profit-loss/ProfitLossReport';
 
 const routes: RouteObject[] = [
   {
@@ -31,6 +32,10 @@ const routes: RouteObject[] = [
       {
         path: 'reports',
         element: <ReportsPage />,
+      },
+      {
+        path: 'reports/profit-loss',
+        element: <ProfitLossReport />,
       },
       {
         path: '*',
