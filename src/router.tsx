@@ -7,6 +7,7 @@ import InvoiceDetailPage from './pages/InvoiceDetailPage';
 import PaymentsPage from './pages/PaymentsPage';
 import ReportsPage from './components/reports/ReportsPage';
 import ProfitLossReport from './components/reports/profit-loss/ProfitLossReport';
+import FinancialDashboard from './components/dashboard/FinancialDashboard';
 
 const routes: RouteObject[] = [
   {
@@ -36,6 +37,10 @@ const routes: RouteObject[] = [
       {
         path: 'reports/profit-loss',
         element: <ProfitLossReport />,
+      },
+      {
+        path: 'reports/financial-dashboard',
+        element: <FinancialDashboard />,
       },
       {
         path: '*',
