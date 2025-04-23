@@ -12,6 +12,7 @@ import {
   AlertCircle,
   Landmark,
   CheckCircle2,
+  Shield,
 } from 'lucide-react';
 
 const Sidebar: React.FC = () => {
@@ -28,6 +29,11 @@ const Sidebar: React.FC = () => {
     { name: 'Detracciones', path: '/detractions', icon: <Landmark className="h-5 w-5" /> },
     { name: 'Validaciones', path: '/validations', icon: <CheckCircle2 className="h-5 w-5" /> },
     { name: 'Reportes', path: '/reports', icon: <FileBarChart className="h-5 w-5" /> },
+    { 
+      name: 'Gestión de Calidad', 
+      path: '/quality-management', 
+      icon: <Shield className="h-5 w-5" /> 
+    },
     { name: 'Clientes', path: '/clients', icon: <Users className="h-5 w-5" /> },
     { name: 'Alertas', path: '/alerts', icon: <AlertCircle className="h-5 w-5" /> },
     { name: 'Configuración', path: '/settings', icon: <Settings className="h-5 w-5" /> },
