@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Report, ReportSection } from '../../types/reports';
 import ReportList from './ReportList';
 import { ChartBarIcon, DocumentTextIcon, CalculatorIcon } from '@heroicons/react/24/outline';
@@ -17,7 +18,7 @@ const defaultReports: Report[] = [
     title: 'Pérdidas y ganancias',
     category: 'financial',
     isFavorite: true,
-    path: '/reports/pyl',
+    path: '/reports/profit-loss',
     icon: '💰'
   },
   {
@@ -47,6 +48,7 @@ const defaultReports: Report[] = [
 ];
 
 const ReportsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>(defaultReports);
 
   const toggleFavorite = useCallback((reportId: string) => {
@@ -60,9 +62,8 @@ const ReportsPage: React.FC = () => {
   }, []);
 
   const handleSelectReport = useCallback((report: Report) => {
-    // Aquí se implementará la navegación al reporte seleccionado
-    console.log('Navegando a:', report.path);
-  }, []);
+    navigate(report.path);
+  }, [navigate]);
 
   const sections: ReportSection[] = [
     {
