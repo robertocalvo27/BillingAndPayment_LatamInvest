@@ -6,6 +6,14 @@ import { ChartBarIcon, DocumentTextIcon, CalculatorIcon } from '@heroicons/react
 
 const defaultReports: Report[] = [
   {
+    id: 'dashboard-financiero',
+    title: 'Dashboard Financiero',
+    category: 'financial',
+    isFavorite: true,
+    path: '/reports/financial-dashboard',
+    icon: '📊'
+  },
+  {
     id: 'balance-general',
     title: 'Balance general',
     category: 'financial',
@@ -81,38 +89,19 @@ const ReportsPage: React.FC = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-2">Informes</h1>
-        <div className="flex space-x-4">
-          <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
-            Informes estándar
-          </button>
-          <button className="px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-            Personalizar informes
-          </button>
-          <button className="px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-            Informes de gerencia
-          </button>
-        </div>
+        <h1 className="text-2xl font-bold text-slate-900">Reportes</h1>
+        <p className="mt-2 text-sm text-slate-500">
+          Accede a todos los reportes financieros y de gestión
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-4">
-            <input
-              type="text"
-              placeholder="Escribe aquí el nombre del informe"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
-          <ReportList
-            sections={sections}
-            onToggleFavorite={toggleFavorite}
-            onSelectReport={handleSelectReport}
-          />
-        </div>
-      </div>
+      <ReportList
+        sections={sections}
+        onToggleFavorite={toggleFavorite}
+        onSelectReport={handleSelectReport}
+      />
     </div>
   );
 };
