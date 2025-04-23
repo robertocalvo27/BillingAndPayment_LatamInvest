@@ -1,8 +1,13 @@
 export interface Invoice {
   id: number;
   usuario: string;
+  ruc: string;
+  direccion: string;
+  telefono: string;
   nombreProducto: string;
   detalle: string;
+  cantidad: number;
+  precioUnitario: number;
   noBandas: number | null;
   bandas: number | null;
   servicios: number | null;
@@ -31,6 +36,7 @@ export interface Invoice {
   noFactura: string;
   estatusFactura: string;
   observaciones: string;
+  seguimiento: string;
   fechaInicial: string | null;
   fechaFinal: string | null;
   validacionClienteDias: number | null;
