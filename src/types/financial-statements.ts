@@ -2,6 +2,8 @@ export type PeriodType = 'months' | 'quarters' | 'years';
 
 export type AccountingMethod = 'cash' | 'accrual';
 
+export type BusinessUnit = 'all' | 'logifit' | 'bizflow-tech' | 'logiflex';
+
 export interface DateRange {
   startDate: string;
   endDate: string;
@@ -14,6 +16,7 @@ export interface ProfitLossFilters {
   compareWithPeriod?: DateRange;
   accountingMethod: AccountingMethod;
   showNonCashItems: boolean;
+  businessUnit: BusinessUnit;
 }
 
 export interface FinancialItem {

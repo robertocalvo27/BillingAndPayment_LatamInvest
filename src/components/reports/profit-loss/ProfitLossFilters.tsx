@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfitLossFilters as Filters, PeriodType, AccountingMethod } from '../../../types/financial-statements';
+import { ProfitLossFilters as Filters, PeriodType, AccountingMethod, BusinessUnit } from '../../../types/financial-statements';
 
 interface ProfitLossFiltersProps {
   filters: Filters;
@@ -7,14 +7,16 @@ interface ProfitLossFiltersProps {
 }
 
 const periodOptions: { value: PeriodType; label: string }[] = [
-  { value: 'days', label: 'Solo el total' },
   { value: 'months', label: 'Meses' },
   { value: 'quarters', label: 'Trimestres' },
   { value: 'years', label: 'Años' },
-  { value: 'clients', label: 'Clientes' },
-  { value: 'providers', label: 'Proveedores' },
-  { value: 'employees', label: 'Empleados' },
-  { value: 'products', label: 'Productos/Servicios' },
+];
+
+const businessUnitOptions: { value: BusinessUnit; label: string }[] = [
+  { value: 'all', label: 'Todas las unidades' },
+  { value: 'logifit', label: 'Logifit' },
+  { value: 'bizflow-tech', label: 'Bizflow Tech' },
+  { value: 'logiflex', label: 'Logiflex' },
 ];
 
 const ProfitLossFilters: React.FC<ProfitLossFiltersProps> = ({
@@ -45,6 +47,13 @@ const ProfitLossFilters: React.FC<ProfitLossFiltersProps> = ({
     });
   };
 
+  const handleBusinessUnitChange = (value: BusinessUnit) => {
+    onFiltersChange({
+      ...filters,
+      businessUnit: value,
+    });
+  };
+
   return (
     <div className="bg-white p-4 rounded-lg shadow space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -68,6 +77,24 @@ const ProfitLossFilters: React.FC<ProfitLossFiltersProps> = ({
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
             />
           </div>
+        </div>
+
+        {/* Unidad de Negocio */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Unidad de Negocio
+          </label>
+          <select
+            value={filters.businessUnit}
+            onChange={(e) => handleBusinessUnitChange(e.target.value as BusinessUnit)}
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
+          >
+            {businessUnitOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Mostrar columnas por */}
