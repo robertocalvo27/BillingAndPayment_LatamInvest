@@ -26,6 +26,18 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
     },
   });
 
+  const handleFormSubmit = (data: Partial<Invoice>) => {
+    // Solo permitir el envío del formulario cuando se hace clic en el botón de submit
+    if (!isSubmitting) {
+      onSubmit(data);
+    }
+  };
+
+  const handleTabChange = (tabId: string) => {
+    // Prevenir el envío del formulario al cambiar de tab
+    setActiveTab(tabId);
+  };
+
   const statusOptions: InvoiceStatus[] = [
     '04- VIGENTE',
     '05- OBSERVADA',
@@ -40,8 +52,8 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
 
   const tabs = [
     { id: 'general', label: 'Información General', icon: <FileText className="h-4 w-4" /> },
-    { id: 'amounts', label: 'Montos', icon: <DollarSign className="h-4 w-4" /> },
-    { id: 'dates', label: 'Fechas', icon: <Calendar className="h-4 w-4" /> },
+    { id: 'detail', label: 'Detalle', icon: <DollarSign className="h-4 w-4" /> },
+    { id: 'tracking', label: 'Seguimiento', icon: <Calendar className="h-4 w-4" /> },
     { id: 'additional', label: 'Información Adicional', icon: <ClipboardList className="h-4 w-4" /> },
   ];
 
@@ -49,9 +61,9 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
     switch (activeTab) {
       case 'general':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             <div>
-              <label htmlFor="usuario" className="label">Cliente</label>
+              <label htmlFor="usuario" className="label">Nombre de la Cuenta</label>
               <input
                 id="usuario"
                 type="text"
@@ -64,283 +76,252 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
             </div>
             
             <div>
-              <label htmlFor="nombreProducto" className="label">Producto/Servicio</label>
+              <label htmlFor="ruc" className="label">RUC</label>
               <input
-                id="nombreProducto"
-                type="text"
-                className={`input ${errors.nombreProducto ? 'border-error-500' : ''}`}
-                {...register('nombreProducto', { required: 'Este campo es requerido' })}
-              />
-              {errors.nombreProducto && (
-                <p className="mt-1 text-xs text-error-500">{errors.nombreProducto.message}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="detalle" className="label">Detalle</label>
-              <input
-                id="detalle"
-                type="text"
-                className={`input ${errors.detalle ? 'border-error-500' : ''}`}
-                {...register('detalle')}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="estado" className="label">Estado</label>
-              <select
-                id="estado"
-                className={`select ${errors.estado ? 'border-error-500' : ''}`}
-                {...register('estado', { required: 'Este campo es requerido' })}
-              >
-                {statusOptions.map((status) => (
-                  <option key={status} value={status}>{status}</option>
-                ))}
-              </select>
-              {errors.estado && (
-                <p className="mt-1 text-xs text-error-500">{errors.estado.message}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="noFactura" className="label">No. Factura</label>
-              <input
-                id="noFactura"
-                type="text"
-                className={`input ${errors.noFactura ? 'border-error-500' : ''}`}
-                {...register('noFactura', { required: 'Este campo es requerido' })}
-              />
-              {errors.noFactura && (
-                <p className="mt-1 text-xs text-error-500">{errors.noFactura.message}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="ocOs" className="label">OC/OS</label>
-              <input
-                id="ocOs"
+                id="ruc"
                 type="text"
                 className="input"
-                {...register('ocOs')}
+                {...register('ruc')}
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="direccion" className="label">Dirección</label>
+              <input
+                id="direccion"
+                type="text"
+                className="input"
+                {...register('direccion')}
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="telefono" className="label">Central telefónica</label>
+              <input
+                id="telefono"
+                type="text"
+                className="input"
+                {...register('telefono')}
               />
             </div>
           </div>
         );
       
-      case 'amounts':
+      case 'detail':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <label htmlFor="noBandas" className="label">No. Bandas</label>
-              <input
-                id="noBandas"
-                type="number"
-                className="input"
-                {...register('noBandas', { valueAsNumber: true })}
-              />
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="ocOs" className="label">OC/OS</label>
+                <input
+                  id="ocOs"
+                  type="text"
+                  className="input"
+                  {...register('ocOs')}
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="noFactura" className="label">No. Factura</label>
+                <input
+                  id="noFactura"
+                  type="text"
+                  className={`input ${errors.noFactura ? 'border-error-500' : ''}`}
+                  {...register('noFactura', { required: 'Este campo es requerido' })}
+                />
+                {errors.noFactura && (
+                  <p className="mt-1 text-xs text-error-500">{errors.noFactura.message}</p>
+                )}
+              </div>
+              
+              <div>
+                <label htmlFor="estado" className="label">Estado</label>
+                <select
+                  id="estado"
+                  className={`select ${errors.estado ? 'border-error-500' : ''}`}
+                  {...register('estado', { required: 'Este campo es requerido' })}
+                >
+                  {statusOptions.map((status) => (
+                    <option key={status} value={status}>{status}</option>
+                  ))}
+                </select>
+                {errors.estado && (
+                  <p className="mt-1 text-xs text-error-500">{errors.estado.message}</p>
+                )}
+              </div>
             </div>
-            
-            <div>
-              <label htmlFor="bandas" className="label">Bandas ($)</label>
-              <input
-                id="bandas"
-                type="number"
-                step="0.01"
-                className="input"
-                {...register('bandas', { valueAsNumber: true })}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="servicios" className="label">Servicios ($)</label>
-              <input
-                id="servicios"
-                type="number"
-                step="0.01"
-                className="input"
-                {...register('servicios', { valueAsNumber: true })}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="otros" className="label">Otros ($)</label>
-              <input
-                id="otros"
-                type="number"
-                step="0.01"
-                className="input"
-                {...register('otros', { valueAsNumber: true })}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="subtotal" className="label">Subtotal ($)</label>
-              <input
-                id="subtotal"
-                type="number"
-                step="0.01"
-                className={`input ${errors.subtotal ? 'border-error-500' : ''}`}
-                {...register('subtotal', { 
-                  required: 'Este campo es requerido',
-                  valueAsNumber: true
-                })}
-              />
-              {errors.subtotal && (
-                <p className="mt-1 text-xs text-error-500">{errors.subtotal.message}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="igv" className="label">IGV ($)</label>
-              <input
-                id="igv"
-                type="number"
-                step="0.01"
-                className={`input ${errors.igv ? 'border-error-500' : ''}`}
-                {...register('igv', { 
-                  required: 'Este campo es requerido',
-                  valueAsNumber: true
-                })}
-              />
-              {errors.igv && (
-                <p className="mt-1 text-xs text-error-500">{errors.igv.message}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="total" className="label">Total ($)</label>
-              <input
-                id="total"
-                type="number"
-                step="0.01"
-                className={`input ${errors.total ? 'border-error-500' : ''}`}
-                {...register('total', { 
-                  required: 'Este campo es requerido',
-                  valueAsNumber: true
-                })}
-              />
-              {errors.total && (
-                <p className="mt-1 text-xs text-error-500">{errors.total.message}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="moneda" className="label">Moneda</label>
-              <select
-                id="moneda"
-                className="select"
-                {...register('moneda')}
-              >
-                <option value="DÓLARES">DÓLARES</option>
-                <option value="SOLES">SOLES</option>
-              </select>
-            </div>
-            
-            <div>
-              <label htmlFor="tc" className="label">Tipo de Cambio</label>
-              <input
-                id="tc"
-                type="number"
-                step="0.001"
-                className="input"
-                {...register('tc', { valueAsNumber: true })}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="totalSoles" className="label">Total (S/)</label>
-              <input
-                id="totalSoles"
-                type="number"
-                step="0.01"
-                className="input"
-                {...register('totalSoles', { valueAsNumber: true })}
-              />
+
+            <div className="border-t border-slate-200 pt-6">
+              <div className="mb-4">
+                <h3 className="text-lg font-medium">Detalle de Productos/Servicios</h3>
+              </div>
+              
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-slate-50">
+                    <th className="px-4 py-2 text-left">No. línea</th>
+                    <th className="px-4 py-2 text-left">Producto</th>
+                    <th className="px-4 py-2 text-left">Detalle</th>
+                    <th className="px-4 py-2 text-right">Cant.</th>
+                    <th className="px-4 py-2 text-left">Moneda</th>
+                    <th className="px-4 py-2 text-right">Precio Unit.</th>
+                    <th className="px-4 py-2 text-right">Subtotal</th>
+                    <th className="px-4 py-2 text-right">IGV</th>
+                    <th className="px-4 py-2 text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-2">1</td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="text"
+                        className="input"
+                        {...register('nombreProducto')}
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="text"
+                        className="input"
+                        {...register('detalle')}
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="number"
+                        className="input text-right"
+                        {...register('cantidad', { valueAsNumber: true })}
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <select
+                        className="select"
+                        {...register('moneda')}
+                      >
+                        <option value="DÓLARES">DÓLARES</option>
+                        <option value="SOLES">SOLES</option>
+                      </select>
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="input text-right"
+                        {...register('precioUnitario', { valueAsNumber: true })}
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="input text-right"
+                        {...register('subtotal', { valueAsNumber: true })}
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="input text-right"
+                        {...register('igv', { valueAsNumber: true })}
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="input text-right"
+                        {...register('total', { valueAsNumber: true })}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         );
       
-      case 'dates':
+      case 'tracking':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <label htmlFor="periodo" className="label">Periodo</label>
-              <input
-                id="periodo"
-                type="text"
-                className="input"
-                {...register('periodo')}
-              />
+          <div className="space-y-6">
+            <div className="flex flex-col space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-medium">Bitácora de Seguimiento</h3>
+                <button
+                  type="button"
+                  className="btn-outline btn-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // Aquí se implementará la lógica para agregar nuevo seguimiento
+                    console.log('Agregar nuevo seguimiento');
+                  }}
+                >
+                  Agregar Seguimiento
+                </button>
+              </div>
+              
+              <div className="bg-slate-50 p-4 rounded-lg">
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-start space-x-3">
+                    <textarea
+                      rows={3}
+                      className="input flex-1"
+                      placeholder="Ingrese comentarios de seguimiento o contacto para cobranza..."
+                      {...register('seguimiento')}
+                      onKeyDown={(e) => {
+                        // Prevenir envío del formulario con Enter
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      className="btn-primary btn-sm"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        // Aquí se implementará la lógica para guardar el seguimiento
+                        console.log('Guardar seguimiento');
+                      }}
+                    >
+                      Guardar Nota
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
             
-            <div>
-              <label htmlFor="mes" className="label">Mes</label>
-              <input
-                id="mes"
-                type="text"
-                className="input"
-                {...register('mes')}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="anio" className="label">Año</label>
-              <input
-                id="anio"
-                type="number"
-                className="input"
-                {...register('anio', { valueAsNumber: true })}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="term" className="label">Término (días)</label>
-              <input
-                id="term"
-                type="number"
-                className="input"
-                {...register('term', { valueAsNumber: true })}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="fechaFact" className="label">Fecha Factura</label>
-              <input
-                id="fechaFact"
-                type="date"
-                className="input"
-                {...register('fechaFact')}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="fechaRegistro" className="label">Fecha Registro</label>
-              <input
-                id="fechaRegistro"
-                type="date"
-                className="input"
-                {...register('fechaRegistro')}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="dueDate" className="label">Fecha Vencimiento</label>
-              <input
-                id="dueDate"
-                type="date"
-                className="input"
-                {...register('dueDate')}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="fechaRealPago" className="label">Fecha Real Pago</label>
-              <input
-                id="fechaRealPago"
-                type="date"
-                className="input"
-                {...register('fechaRealPago')}
-              />
+            <div className="border-t border-slate-200 pt-6">
+              <h3 className="text-lg font-medium mb-4">Historial de Seguimiento</h3>
+              <div className="space-y-4">
+                {/* Ejemplo de historial de seguimiento */}
+                <div className="bg-white border border-slate-200 rounded-lg p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <p className="text-sm font-medium text-slate-900">Usuario Ejemplo</p>
+                      <p className="text-xs text-slate-500">15/03/2024 10:30 AM</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-600">
+                    Se realizó llamada al cliente para seguimiento de pago. Cliente indica que procesará el pago la próxima semana.
+                  </p>
+                </div>
+                
+                <div className="bg-white border border-slate-200 rounded-lg p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <p className="text-sm font-medium text-slate-900">Usuario Ejemplo</p>
+                      <p className="text-xs text-slate-500">14/03/2024 3:45 PM</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-600">
+                    Se envió correo de recordatorio de pago al cliente.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -366,11 +347,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <TabNavigation
         tabs={tabs}
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={handleTabChange}
       />
       
       <div className="mt-6">

@@ -20,13 +20,19 @@ const TabNavigation: React.FC<TabNavigationProps> = ({
   onTabChange,
   className,
 }) => {
+  const handleTabClick = (e: React.MouseEvent<HTMLButtonElement>, tabId: string) => {
+    e.preventDefault(); // Prevenir cualquier comportamiento por defecto
+    onTabChange(tabId);
+  };
+
   return (
     <div className={clsx('border-b border-slate-200', className)}>
       <nav className="-mb-px flex space-x-8">
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => onTabChange(tab.id)}
+            type="button" // Especificar explícitamente que es un botón tipo button
+            onClick={(e) => handleTabClick(e, tab.id)}
             className={clsx(
               'tab-button whitespace-nowrap',
               activeTab === tab.id
