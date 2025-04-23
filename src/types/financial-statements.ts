@@ -1,4 +1,4 @@
-export type PeriodType = 'days' | 'weeks' | 'months' | 'quarters' | 'years' | 'clients' | 'providers' | 'employees' | 'products';
+export type PeriodType = 'months' | 'quarters' | 'years';
 
 export type AccountingMethod = 'cash' | 'accrual';
 
