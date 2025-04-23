@@ -1,32 +1,72 @@
 import React from 'react';
-import { ProfitLossData, FinancialItem } from '../../../types/financial-statements';
-import { formatCurrency } from '../../../utils/format';
+import { PeriodType, FinancialItem } from '../../../types/financial-statements';
 
-interface ProfitLossTableProps {
-  data: ProfitLossData;
+interface MonthlyData {
+  [month: string]: number;
 }
 
-const FinancialItemRow: React.FC<{
+const MONTHS = [
+  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+];
+
+const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+const generateExampleMonthlyData = (baseAmount: number): MonthlyData => {
+  return MONTHS.reduce((acc, month, index) => {
+    // Genera datos de ejemplo con variación aleatoria
+    const variation = Math.random() * 0.4 - 0.2; // -20% a +20%
+    acc[month] = Math.round(baseAmount * (1 + variation));
+    return acc;
+  }, {} as MonthlyData);
+};
+
+const calculateQuarterlyData = (monthlyData: MonthlyData): { [quarter: string]: number } => {
+  return QUARTERS.reduce((acc, quarter, index) => {
+    const startMonth = index * 3;
+    const quarterSum = MONTHS.slice(startMonth, startMonth + 3)
+      .reduce((sum, month) => sum + (monthlyData[month] || 0), 0);
+    acc[quarter] = quarterSum;
+    return acc;
+  }, {} as { [quarter: string]: number });
+};
+
+interface FinancialItemRowProps {
   item: FinancialItem;
+  periodType: PeriodType;
+  monthlyData: MonthlyData;
   level?: number;
-  isTotal?: boolean;
-}> = ({ item, level = 0, isTotal = false }) => {
-  const paddingLeft = `${level * 1.5}rem`;
-  
+}
+
+const FinancialItemRow: React.FC<FinancialItemRowProps> = ({ 
+  item, 
+  periodType, 
+  monthlyData,
+  level = 0 
+}) => {
+  const quarterlyData = calculateQuarterlyData(monthlyData);
+  const periods = periodType === 'months' ? MONTHS : QUARTERS;
+  const data = periodType === 'months' ? monthlyData : quarterlyData;
+
   return (
     <>
-      <tr className={isTotal ? 'font-bold bg-gray-50' : ''}>
-        <td className="px-4 py-2" style={{ paddingLeft }}>
-          {item.name}
-        </td>
-        <td className="px-4 py-2 text-right">
-          {formatCurrency(item.amount)}
-        </td>
+      <tr className={`${level > 0 ? 'pl-' + (level * 4) : ''}`}>
+        <td className="px-4 py-2 font-medium">{item.name}</td>
+        {periods.map((period) => (
+          <td key={period} className="px-4 py-2 text-right">
+            {new Intl.NumberFormat('es-PE', {
+              style: 'currency',
+              currency: 'PEN'
+            }).format(data[period] || 0)}
+          </td>
+        ))}
       </tr>
       {item.children?.map((child) => (
         <FinancialItemRow
           key={child.id}
           item={child}
+          periodType={periodType}
+          monthlyData={generateExampleMonthlyData(child.amount)}
           level={level + 1}
         />
       ))}
@@ -34,88 +74,58 @@ const FinancialItemRow: React.FC<{
   );
 };
 
-const ProfitLossTable: React.FC<ProfitLossTableProps> = ({ data }) => {
+interface ProfitLossTableProps {
+  periodType: PeriodType;
+}
+
+export const ProfitLossTable: React.FC<ProfitLossTableProps> = ({ periodType }) => {
+  // Datos de ejemplo
+  const salesData = {
+    id: '1',
+    name: 'Ventas',
+    amount: 100000,
+    children: [
+      { id: '1.1', name: 'Ventas Nacionales', amount: 70000 },
+      { id: '1.2', name: 'Exportaciones', amount: 30000 }
+    ]
+  };
+
+  const costsData = {
+    id: '2',
+    name: 'Costos',
+    amount: 60000,
+    children: [
+      { id: '2.1', name: 'Materia Prima', amount: 35000 },
+      { id: '2.2', name: 'Mano de Obra', amount: 25000 }
+    ]
+  };
+
+  const periods = periodType === 'months' ? MONTHS : QUARTERS;
+
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
-      <div className="px-6 py-4 border-b">
-        <h2 className="text-xl font-bold text-gray-900">{data.companyName}</h2>
-        <p className="text-sm text-gray-500">Pérdidas y ganancias</p>
-        <p className="text-sm text-gray-500">{data.period}</p>
-      </div>
-
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">
-                Concepto
-              </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-900">
-                Total
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {/* Ingresos */}
-            <tr className="bg-gray-50 font-semibold">
-              <td className="px-4 py-2">Ingresos</td>
-              <td></td>
-            </tr>
-            {data.income.map((item) => (
-              <FinancialItemRow key={item.id} item={item} level={1} />
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="px-4 py-2 text-left">Concepto</th>
+            {periods.map((period) => (
+              <th key={period} className="px-4 py-2 text-right">{period}</th>
             ))}
-
-            {/* Costo de ventas */}
-            <tr className="bg-gray-50 font-semibold">
-              <td className="px-4 py-2">Costo de las ventas</td>
-              <td></td>
-            </tr>
-            {data.costOfSales.map((item) => (
-              <FinancialItemRow key={item.id} item={item} level={1} />
-            ))}
-
-            {/* Beneficio bruto */}
-            <tr className="bg-green-50 font-bold">
-              <td className="px-4 py-2">BENEFICIO BRUTO</td>
-              <td className="px-4 py-2 text-right">
-                {formatCurrency(data.grossProfit)}
-              </td>
-            </tr>
-
-            {/* Gastos operativos */}
-            <tr className="bg-gray-50 font-semibold">
-              <td className="px-4 py-2">Gastos</td>
-              <td></td>
-            </tr>
-            {data.operatingExpenses.map((item) => (
-              <FinancialItemRow key={item.id} item={item} level={1} />
-            ))}
-
-            {/* Otros gastos */}
-            {data.otherExpenses.length > 0 && (
-              <>
-                <tr className="bg-gray-50 font-semibold">
-                  <td className="px-4 py-2">Otros gastos</td>
-                  <td></td>
-                </tr>
-                {data.otherExpenses.map((item) => (
-                  <FinancialItemRow key={item.id} item={item} level={1} />
-                ))}
-              </>
-            )}
-
-            {/* Ganancias netas */}
-            <tr className="bg-green-100 font-bold text-lg">
-              <td className="px-4 py-3">GANANCIAS NETAS</td>
-              <td className="px-4 py-3 text-right">
-                {formatCurrency(data.netIncome)}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          </tr>
+        </thead>
+        <tbody>
+          <FinancialItemRow
+            item={salesData}
+            periodType={periodType}
+            monthlyData={generateExampleMonthlyData(salesData.amount)}
+          />
+          <FinancialItemRow
+            item={costsData}
+            periodType={periodType}
+            monthlyData={generateExampleMonthlyData(costsData.amount)}
+          />
+        </tbody>
+      </table>
     </div>
   );
-};
-
-export default ProfitLossTable; 
+}; 
