@@ -32,11 +32,7 @@ const FinancialDashboard: React.FC = () => {
       case 'budget':
         return <BudgetOverview filters={filters} />;
       case 'improvements':
-        return (
-          <div className="text-center py-10">
-            <p className="text-gray-500">Módulo de mejoras financieras con IA en desarrollo</p>
-          </div>
-        );
+        return <ImprovementsOverview filters={filters} />;
       case 'projections':
         return (
           <div className="text-center py-10">
