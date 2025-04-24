@@ -1,6 +1,7 @@
 import { useQualityManagementStore } from '../../store/qualityManagementStore';
 import { softwareDevelopmentDocs } from './documents/software-development';
 import { projectManagementDocs } from './documents/project-management';
+import { customerServiceDocs } from './documents/customer-service';
 import { QualityDocument } from '../../types/quality-management';
 
 /**
@@ -14,6 +15,7 @@ export function initializeQualityManagementData(): void {
   const allDocuments: QualityDocument[] = [
     ...softwareDevelopmentDocs,
     ...projectManagementDocs,
+    ...customerServiceDocs,
     // Aquí se pueden agregar más documentos de otras categorías
   ];
   

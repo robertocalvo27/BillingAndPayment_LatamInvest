@@ -18,30 +18,42 @@ export async function loadDocument(path: string): Promise<QualityDocument> {
       
       // Si el documento tiene frontmatter, usamos esos datos
       if (Object.keys(data).length > 0) {
-        return {
-          ...data,
-          content: content.trim()
-        } as QualityDocument;
+        const formattedDoc: QualityDocument = {
+          id: data.id || '',
+          title: data.title || '',
+          type: data.type || 'procedure',
+          category: data.category || 'quality_assurance',
+          status: data.status || 'approved',
+          revision: data.revision || '1',
+          updatedAt: data.updatedAt || new Date().toISOString().split('T')[0],
+          description: data.description || '',
+          content: content.trim(),
+        };
+
+        return formattedDoc;
       } else {
         // Si no tiene frontmatter, extraemos la información del contenido markdown
         const lines = markdown.split('\n');
         const title = lines[0].replace('# ', '').trim();
-        let code = '';
+        let id = '';
         let revision = '';
-        let lastUpdated = '';
+        let updatedAt = '';
         let approvedBy = '';
+        let description = '';
 
         // Extraer metadatos básicos del markdown
         for (let i = 1; i < lines.length; i++) {
           const line = lines[i].trim();
           if (line.startsWith('**Código:**')) {
-            code = line.replace('**Código:**', '').trim();
+            id = line.replace('**Código:**', '').trim();
           } else if (line.startsWith('**Versión:**')) {
             revision = line.replace('**Versión:**', '').trim();
           } else if (line.startsWith('**Fecha de Aprobación:**')) {
-            lastUpdated = line.replace('**Fecha de Aprobación:**', '').trim();
+            updatedAt = line.replace('**Fecha de Aprobación:**', '').trim();
           } else if (line.startsWith('**Aprobado por:**')) {
             approvedBy = line.replace('**Aprobado por:**', '').trim();
+          } else if (line.startsWith('**Descripción:**')) {
+            description = line.replace('**Descripción:**', '').trim();
           }
         }
 
@@ -77,12 +89,27 @@ export async function loadDocument(path: string): Promise<QualityDocument> {
           }
         }
 
+        // Extraer el ID del documento de la ruta del archivo si no se encontró en el contenido
+        if (!id) {
+          const pathParts = path.split('/');
+          const fileName = pathParts[pathParts.length - 1];
+          if (fileName.includes('_')) {
+            id = fileName.split('_')[0];
+          }
+        }
+
         return {
-          code,
+          id,
           title,
+          type: id.includes('-PRO-') ? 'procedure' : 
+                id.includes('-POL-') ? 'policy' : 
+                id.includes('-MAN-') ? 'manual' : 
+                id.includes('-SAC-') ? 'procedure' : 'document',
+          category: id.includes('-SAC-') ? 'customer_service' : 'quality_assurance',
+          status: 'approved',
           revision,
-          lastUpdated,
-          approvedBy: { name: approvedBy },
+          updatedAt,
+          description: description || 'Documento del Sistema de Gestión de Calidad',
           content: markdown,
           versionHistory
         };
@@ -91,9 +118,26 @@ export async function loadDocument(path: string): Promise<QualityDocument> {
       console.error('Error parsing markdown:', parseError);
       
       // Si no podemos parsear el markdown, devolvemos el contenido sin procesar
+      const pathParts = path.split('/');
+      const fileName = pathParts[pathParts.length - 1];
+      let id = '';
+      let title = 'Documento sin título';
+      
+      if (fileName.includes('_')) {
+        const parts = fileName.split('_');
+        id = parts[0];
+        title = parts[1]?.replace('.md', '') || title;
+      }
+      
       return {
-        code: path.split('/').pop()?.split('_')[0] || '',
-        title: path.split('/').pop()?.split('_')[1]?.replace('.md', '') || 'Documento sin título',
+        id,
+        title,
+        type: 'document',
+        category: 'quality_assurance',
+        status: 'approved',
+        revision: '1',
+        updatedAt: new Date().toISOString().split('T')[0],
+        description: 'Documento del Sistema de Gestión de Calidad',
         content: markdown
       };
     }
