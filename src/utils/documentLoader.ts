@@ -104,8 +104,12 @@ export async function loadDocument(path: string): Promise<QualityDocument> {
           type: id.includes('-PRO-') ? 'procedure' : 
                 id.includes('-POL-') ? 'policy' : 
                 id.includes('-MAN-') ? 'manual' : 
-                id.includes('-SAC-') ? 'procedure' : 'document',
-          category: id.includes('-SAC-') ? 'customer_service' : 'quality_assurance',
+                id.includes('-SAC-') ? 'procedure' :
+                id.includes('-GR-') ? 'procedure' :
+                id.includes('-MC-') ? 'procedure' : 'document',
+          category: id.includes('-SAC-') ? 'customer_service' : 
+                    id.includes('-GR-') ? 'risk_management' :
+                    id.includes('-MC-') ? 'continuous_improvement' : 'quality_assurance',
           status: 'approved',
           revision,
           updatedAt,

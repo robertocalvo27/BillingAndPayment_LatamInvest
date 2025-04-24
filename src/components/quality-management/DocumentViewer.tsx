@@ -47,6 +47,9 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
       case 'rh':
         folder = 'procedures/resource';
         break;
+      case 'mc':
+        folder = 'procedures/continuous-improvement';
+        break;
       default:
         folder = '';
     }
@@ -86,15 +89,19 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
       case 'SGC-PRY-004':
         return 'CierredeProyectos';
       case 'SGC-GR-001':
-        return 'IdentificacionRiesgos';
+        return 'GestionRiesgosProyectos';
       case 'SGC-GR-002':
-        return 'TratamientoRiesgos';
+        return 'AnalisisImpacto';
       case 'SGC-GR-003':
-        return 'GestionCrisis';
+        return 'PlanMitigacion';
       case 'SGC-GR-004':
         return 'MonitoreoRiesgos';
       case 'SGC-GR-005':
         return 'GestionRiesgosOperacionales';
+      case 'SGC-GR-002-SEG':
+        return 'GestionRiesgosSeguridad';
+      case 'SGC-GR-003-REG':
+        return 'GestionRiesgosRegulatorios';
       case 'SGC-QA-001':
         return 'GestionNoConformidades';
       case 'SGC-QA-002':
@@ -111,6 +118,20 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
         return 'GestionAsignacionRecursos';
       case 'SGC-RH-003':
         return 'GestionAmbienteTrabajo';
+      case 'SGC-MC-001':
+        return 'GestionInnovacion';
+      case 'SGC-MC-002':
+        return 'AnalisisTecnologiasEmergentes';
+      case 'SGC-MC-003':
+        return 'GestionConocimiento';
+      case 'SGC-MC-004':
+        return 'BenchmarkingMejoresPracticas';
+      case 'SGC-MC-005':
+        return 'GestionProyectosMejora';
+      case 'F-MC-001':
+        return 'FormularioPropuestaInnovacion';
+      case 'F-MC-002':
+        return 'MatrizEvaluacionTecnologias';
       default:
         return '';
     }
