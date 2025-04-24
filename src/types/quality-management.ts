@@ -1,4 +1,4 @@
-export type DocumentStatus = 'draft' | 'review' | 'approved' | 'obsolete';
+export type DocumentStatus = 'draft' | 'review' | 'approved' | 'obsolete' | 'pending';
 
 export type DocumentType = 
   | 'policy'
@@ -18,30 +18,15 @@ export type ProcessCategory =
   | 'continuous_improvement';
 
 export interface QualityDocument {
-  id?: string;
-  code: string;
+  id: string;
   title: string;
-  version?: string;
-  revision?: string;
-  type?: DocumentType;
-  status?: DocumentStatus;
-  category?: ProcessCategory;
-  owner?: string;
-  approver?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  lastUpdated?: string;
-  reviewDate?: string;
+  type: DocumentType;
+  category: ProcessCategory;
+  status: DocumentStatus;
+  revision: string | number;
+  updatedAt: string;
+  description: string;
   content: string;
-  attachments?: string[];
-  relatedDocs?: string[];
-  changelog?: DocumentChange[];
-  versionHistory?: VersionHistory[];
-  approvedBy?: {
-    name?: string;
-    position?: string;
-    date?: string;
-  };
 }
 
 export interface VersionHistory {
