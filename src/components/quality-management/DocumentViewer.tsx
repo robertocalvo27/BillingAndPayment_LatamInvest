@@ -41,6 +41,12 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
       case 'gr':
         folder = 'procedures/risk';
         break;
+      case 'qa':
+        folder = 'procedures/quality';
+        break;
+      case 'rh':
+        folder = 'procedures/resource';
+        break;
       default:
         folder = '';
     }
@@ -89,6 +95,22 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
         return 'MonitoreoRiesgos';
       case 'SGC-GR-005':
         return 'GestionRiesgosOperacionales';
+      case 'SGC-QA-001':
+        return 'GestionNoConformidades';
+      case 'SGC-QA-002':
+        return 'AuditoriasInternas';
+      case 'SGC-QA-003':
+        return 'ControlCalibracionEquipos';
+      case 'SGC-QA-004':
+        return 'RevisionDireccion';
+      case 'SGC-QA-005':
+        return 'MejoraContinua';
+      case 'SGC-RH-001':
+        return 'GestionCapacidadesCompetencias';
+      case 'SGC-RH-002':
+        return 'GestionAsignacionRecursos';
+      case 'SGC-RH-003':
+        return 'GestionAmbienteTrabajo';
       default:
         return '';
     }
