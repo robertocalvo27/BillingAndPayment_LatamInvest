@@ -38,6 +38,9 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
       case 'pry':
         folder = 'procedures';
         break;
+      case 'qa':
+        folder = 'procedures/quality';
+        break;
       default:
         folder = '';
     }
@@ -76,6 +79,16 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
         return 'EjecucionyControldeProyectos';
       case 'SGC-PRY-004':
         return 'CierredeProyectos';
+      case 'SGC-QA-001':
+        return 'GestionNoConformidades';
+      case 'SGC-QA-002':
+        return 'AuditoriasInternas';
+      case 'SGC-QA-003':
+        return 'ControlCalibracionEquipos';
+      case 'SGC-QA-004':
+        return 'RevisionDireccion';
+      case 'SGC-QA-005':
+        return 'MejoraContinua';
       default:
         return '';
     }
