@@ -7,6 +7,7 @@ import { resourceManagementDocs } from './documents/resource-management';
 import { riskManagementDocs } from './documents/risk-management';
 import { continuousImprovementDocs } from './documents/continuous-improvement';
 import { QualityDocument } from '../../types/quality-management';
+import { allMetrics } from './metrics/sample-metrics';
 
 /**
  * Inicializa el store de gestión de calidad con los documentos predefinidos
@@ -30,5 +31,8 @@ export function initializeQualityManagementData(): void {
   // Cargar los documentos en el store
   store.setDocuments(allDocuments);
   
-  console.log('Store de gestión de calidad inicializado con', allDocuments.length, 'documentos');
+  // Cargar las métricas en el store
+  store.setMetrics(allMetrics);
+  
+  console.log('Store de gestión de calidad inicializado con', allDocuments.length, 'documentos y', allMetrics.length, 'métricas');
 } 
