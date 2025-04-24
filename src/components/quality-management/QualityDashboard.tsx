@@ -12,11 +12,12 @@ import {
   Shield
 } from 'lucide-react';
 import DocumentManagement from './DocumentManagement';
+import MetricsManagement from './MetricsManagement';
 import { initializeQualityManagementData } from '../../data/quality-management/initialize';
 import { useQualityManagementStore } from '../../store/qualityManagementStore';
 
 const QualityDashboard: React.FC = () => {
-  const { documents } = useQualityManagementStore();
+  const { documents, metrics } = useQualityManagementStore();
   
   // Inicializar datos solo si aún no hay documentos cargados
   useEffect(() => {
@@ -32,7 +33,13 @@ const QualityDashboard: React.FC = () => {
         console.log(`Categoría ${category}: ${count} documentos`);
       });
     }
-  }, [documents.length]);
+    
+    if (metrics.length === 0) {
+      console.log('No hay métricas cargadas, inicializando...');
+    } else {
+      console.log('Métricas ya cargadas:', metrics.length);
+    }
+  }, [documents.length, metrics.length]);
 
   return (
     <div className="space-y-6 p-6">
@@ -85,8 +92,10 @@ const QualityDashboard: React.FC = () => {
                     Documentos Activos
                   </span>
                 </div>
-                <h3 className="text-3xl font-bold mt-4">124</h3>
-                <p className="text-sm text-gray-600 mt-1">12 pendientes de revisión</p>
+                <h3 className="text-3xl font-bold mt-4">{documents.length}</h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  {documents.filter(doc => doc.status === 'review').length} pendientes de revisión
+                </p>
               </div>
             </Card>
 
@@ -147,15 +156,27 @@ const QualityDashboard: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="metrics">
-          {/* Metrics content */}
+          <MetricsManagement />
         </TabsContent>
 
         <TabsContent value="audits">
-          {/* Audits content */}
+          <div className="bg-white rounded-lg shadow-card p-6 text-center">
+            <Shield className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-slate-900 mb-2">Gestión de Auditorías</h3>
+            <p className="text-slate-500 max-w-md mx-auto">
+              El módulo de gestión de auditorías estará disponible en próximas actualizaciones.
+            </p>
+          </div>
         </TabsContent>
 
         <TabsContent value="training">
-          {/* Training content */}
+          <div className="bg-white rounded-lg shadow-card p-6 text-center">
+            <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-slate-900 mb-2">Gestión de Capacitación</h3>
+            <p className="text-slate-500 max-w-md mx-auto">
+              El módulo de gestión de capacitación estará disponible en próximas actualizaciones.
+            </p>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
