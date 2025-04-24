@@ -6,7 +6,8 @@ export type DocumentType =
   | 'work_instruction'
   | 'form'
   | 'record'
-  | 'manual';
+  | 'manual'
+  | 'document';
 
 export type ProcessCategory =
   | 'software_development'
@@ -27,6 +28,7 @@ export interface QualityDocument {
   updatedAt: string;
   description: string;
   content: string;
+  versionHistory?: VersionHistory[];
 }
 
 export interface VersionHistory {

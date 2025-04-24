@@ -71,6 +71,10 @@ const DocumentTypes: Record<DocumentType, { title: string; description: string }
   manual: {
     title: "Manuales",
     description: "Documentación completa de sistemas o procesos"
+  },
+  document: {
+    title: "Documentos",
+    description: "Documentación general del sistema"
   }
 };
 
@@ -159,6 +163,50 @@ const DocumentManagement: React.FC = () => {
     }
   ];
 
+  // Función para generar una lista de elementos de documento
+  const renderDocumentItems = (documents: any[]) => {
+    if (documents.length === 0) {
+      return (
+        <div className="text-center py-10 text-gray-500">
+          No hay documentos en esta categoría
+        </div>
+      );
+    }
+
+    return documents.map(doc => (
+      <div 
+        key={doc.id} 
+        className="border-b border-gray-100 py-4 hover:bg-gray-50 cursor-pointer"
+        onClick={() => setSelectedDocument(doc.id)}
+      >
+        <div className="flex items-start">
+          <div className="text-primary-600 mr-4">
+            <FileText className="w-6 h-6" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex justify-between items-start">
+              <div>
+                <div className="flex items-center">
+                  <span className="text-xs font-medium text-gray-500 mr-2">{doc.id}</span>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <CheckCircle2 className="w-3 h-3 mr-1" />
+                    Aprobado
+                  </span>
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mt-1">{doc.title}</h3>
+              </div>
+              <div className="text-xs text-right">
+                <p className="text-gray-900">Rev. {doc.revision}</p>
+                <p className="text-gray-500">Actualizado: {doc.updatedAt}</p>
+              </div>
+            </div>
+            <p className="text-sm text-gray-500 mt-1 truncate">{doc.description}</p>
+          </div>
+        </div>
+      </div>
+    ));
+  };
+
   if (selectedDocument) {
     return <DocumentViewer documentCode={selectedDocument} onBack={() => setSelectedDocument(null)} />;
   }
@@ -166,6 +214,7 @@ const DocumentManagement: React.FC = () => {
   // Si hay una categoría seleccionada, mostrar los documentos de esa categoría
   if (selectedCategory) {
     const categoryName = DocumentCategories[selectedCategory].title;
+    const categoryDocuments = documents.filter(doc => doc.category === selectedCategory);
     
     return (
       <div className="space-y-6">
@@ -198,73 +247,39 @@ const DocumentManagement: React.FC = () => {
         {/* Barra de búsqueda */}
         <div className="flex space-x-4">
           <div className="flex-1 relative">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
+            </div>
             <input
               type="text"
               placeholder={`Buscar en ${categoryName}...`}
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 sm:text-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+          <button className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <Filter className="h-4 w-4 mr-2" />
+            Filtrar
+          </button>
+          <button className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <ArrowUpDown className="h-4 w-4 mr-2" />
+            Ordenar
+          </button>
         </div>
         
-        {/* Lista de documentos de la categoría */}
+        {/* Lista de documentos */}
         <Card>
           <div className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold">Documentos de {categoryName}</h3>
-              <button className="flex items-center text-sm text-gray-600 hover:text-gray-900">
-                <ArrowUpDown className="w-4 h-4 mr-1" />
-                Ordenar
-              </button>
-            </div>
-            <div className="space-y-4">
-              {filteredDocuments.length > 0 ? (
-                filteredDocuments.map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="flex items-start justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
-                    onClick={() => setSelectedDocument(doc.id)}
-                  >
-                    <div className="flex items-start space-x-4">
-                      <div className="p-2 bg-primary-50 rounded-lg">
-                        <FileText className="w-6 h-6 text-primary-600" />
-                      </div>
-                      <div>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-gray-500">{doc.id}</span>
-                          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                            doc.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                            doc.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                            'bg-gray-100 text-gray-800'
-                          }`}>
-                            {doc.status === 'approved' ? (
-                              <><CheckCircle2 className="w-3 h-3 mr-1" />Aprobado</>
-                            ) : doc.status === 'pending' ? (
-                              <><Clock className="w-3 h-3 mr-1" />Pendiente</>
-                            ) : (
-                              <><AlertCircle className="w-3 h-3 mr-1" />En revisión</>
-                            )}
-                          </span>
-                        </div>
-                        <h4 className="text-base font-medium text-gray-900">{doc.title}</h4>
-                        <p className="text-sm text-gray-500 mt-1">{doc.description}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="text-right">
-                        <p className="text-sm font-medium text-gray-900">Rev. {doc.revision}</p>
-                        <p className="text-xs text-gray-500">Actualizado: {doc.updatedAt}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-gray-500">No hay documentos en esta categoría</p>
-                </div>
-              )}
+            <h3 className="text-lg font-semibold mb-4 flex items-start">
+              <FileText className="w-5 h-5 mr-2 mt-0.5" />
+              Documentos de {categoryName}
+              <span className="ml-2 text-sm font-normal text-gray-500">
+                ({categoryDocuments.length} {categoryDocuments.length === 1 ? 'documento' : 'documentos'})
+              </span>
+            </h3>
+            <div>
+              {renderDocumentItems(categoryDocuments)}
             </div>
           </div>
         </Card>
@@ -272,148 +287,48 @@ const DocumentManagement: React.FC = () => {
     );
   }
 
+  // Vista principal con categorías
   return (
     <div className="space-y-6">
-      {/* Header y Acciones */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Documentación del SGC</h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Gestión documental del Sistema de Gestión de Calidad ISO 9001:2015
-          </p>
-        </div>
-        <div className="flex space-x-3">
-          <button className="btn btn-primary flex items-center">
-            <Plus className="w-4 h-4 mr-2" />
-            Nuevo Documento
-          </button>
-          <button className="btn btn-secondary flex items-center">
-            <Filter className="w-4 h-4 mr-2" />
-            Filtros
-          </button>
-        </div>
-      </div>
-
-      {/* Barra de búsqueda */}
-      <div className="flex space-x-4">
-        <div className="flex-1 relative">
-          <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Buscar documentos..."
-            className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-      </div>
-
-      {/* Categorías de Documentos */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Object.entries(DocumentCategories).map(([key, category]) => (
-          <Card 
-            key={key} 
-            className="hover:shadow-md transition-shadow cursor-pointer"
-            onClick={() => handleCategoryClick(key as ProcessCategory)}
-          >
-            <div className="p-6">
-              <div className="flex items-start space-x-4">
-                <div className="p-2 bg-primary-50 rounded-lg">
-                  <FolderOpen className="w-6 h-6 text-primary-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">{category.title}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{category.description}</p>
-                  
-                  {/* Mostrar número de documentos para cada categoría */}
-                  <div className="mt-3">
-                    {key === 'software_development' && (
-                      <p className="text-sm font-medium text-gray-700">
-                        {softwareDevelopmentDocuments.length} docs
-                      </p>
-                    )}
-                    {key === 'project_management' && (
-                      <p className="text-sm font-medium text-gray-700">
-                        {projectManagementDocuments.length} docs
-                      </p>
-                    )}
-                    {key === 'customer_service' && (
-                      <p className="text-sm font-medium text-gray-700">
-                        {customerServiceDocuments.length} docs
-                      </p>
-                    )}
-                    {key === 'quality_assurance' && (
-                      <p className="text-sm font-medium text-gray-700">
-                        {qualityAssuranceDocuments.length} docs
-                      </p>
-                    )}
-                    {key === 'resource_management' && (
-                      <p className="text-sm font-medium text-gray-700">
-                        {resourceManagementDocuments.length} docs
-                      </p>
-                    )}
-                    {key === 'risk_management' && (
-                      <p className="text-sm font-medium text-gray-700">
-                        {riskManagementDocuments.length} docs
-                      </p>
-                    )}
-                    {key === 'continuous_improvement' && (
-                      <p className="text-sm font-medium text-gray-700">
-                        {continuousImprovementDocuments.length} docs
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
-
-      {/* Lista de Documentos */}
+      {/* Sección de documentos obligatorios */}
       <Card>
         <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold">Documentos Obligatorios</h3>
-            <button className="flex items-center text-sm text-gray-600 hover:text-gray-900">
-              <ArrowUpDown className="w-4 h-4 mr-1" />
-              Ordenar
-            </button>
-          </div>
-          <div className="space-y-4">
-            {mandatoryDocs.map((doc) => (
-              <div
-                key={doc.code}
-                className="flex items-start justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
-                onClick={() => setSelectedDocument(doc.code)}
-              >
-                <div className="flex items-start space-x-4">
-                  <div className="p-2 bg-primary-50 rounded-lg">
-                    <FileText className="w-6 h-6 text-primary-600" />
-                  </div>
-                  <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium text-gray-500">{doc.code}</span>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-                        <CheckCircle2 className="w-3 h-3 mr-1" />
-                        Aprobado
-                      </span>
-                    </div>
-                    <h4 className="text-base font-medium text-gray-900">{doc.title}</h4>
-                    <p className="text-sm text-gray-500 mt-1">{doc.description}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">Rev. 1.0</p>
-                    <p className="text-xs text-gray-500">Actualizado: 2024-03-20</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <h3 className="text-lg font-semibold mb-4">Documentos Obligatorios del SGC</h3>
+          <div>
+            {renderDocumentItems(mandatoryDocs.map(doc => ({ 
+              ...doc, 
+              id: doc.code, 
+              updatedAt: '2024-03-01' 
+            })))}
           </div>
         </div>
       </Card>
+      
+      {/* Categorías de documentos */}
+      <h3 className="text-lg font-semibold">Categorías de Documentos</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Object.entries(DocumentCategories).map(([key, category]) => {
+          const categoryKey = key as ProcessCategory;
+          const count = documents.filter(doc => doc.category === categoryKey).length;
+          
+          return (
+            <Card key={key} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCategoryClick(categoryKey)}>
+              <div className="p-5">
+                <div className="flex items-center justify-between">
+                  <div className="bg-primary-100 p-3 rounded-lg">
+                    <FolderOpen className="w-6 h-6 text-primary-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-500">
+                    {count} {count === 1 ? 'documento' : 'documentos'}
+                  </span>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mt-4">{category.title}</h3>
+                <p className="text-sm text-gray-500 mt-1">{category.description}</p>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 };

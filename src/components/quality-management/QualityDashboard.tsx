@@ -23,6 +23,14 @@ const QualityDashboard: React.FC = () => {
     if (documents.length === 0) {
       initializeQualityManagementData();
       console.log('Documentos de calidad inicializados');
+    } else {
+      console.log('Documentos ya cargados:', documents.length);
+      // Log de documentos por categoría para depuración
+      const categories = ['software_development', 'project_management', 'customer_service', 'quality_assurance', 'resource_management', 'risk_management', 'continuous_improvement'];
+      categories.forEach(category => {
+        const count = documents.filter(doc => doc.category === category).length;
+        console.log(`Categoría ${category}: ${count} documentos`);
+      });
     }
   }, [documents.length]);
 

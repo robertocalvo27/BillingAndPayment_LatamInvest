@@ -18,7 +18,8 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
 
   // Función para determinar la ruta del documento según su código
   const getDocumentPath = (code: string): string => {
-    const type = code.split('-')[1].toLowerCase();
+    const parts = code.split('-');
+    const type = parts[1].toLowerCase();
     let folder = '';
     
     switch (type) {
@@ -29,6 +30,12 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
         folder = 'manuals';
         break;
       case 'pro':
+        folder = 'procedures';
+        break;
+      case 'sac':
+        folder = 'procedures/service';
+        break;
+      case 'pry':
         folder = 'procedures';
         break;
       default:
@@ -51,6 +58,24 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
         return 'AuditoriasInternas';
       case 'SGC-PRO-003':
         return 'GestionRiesgos';
+      case 'SGC-SAC-001':
+        return 'AtencionCliente';
+      case 'SGC-SAC-002':
+        return 'GestionQuejas';
+      case 'SGC-SAC-003':
+        return 'MedicionSatisfaccion';
+      case 'SGC-SAC-004':
+        return 'SoporteTecnico';
+      case 'SGC-SAC-005':
+        return 'OnboardingClientes';
+      case 'SGC-PRY-001':
+        return 'IniciodeProyectos';
+      case 'SGC-PRY-002':
+        return 'PlanificaciondeProyectos';
+      case 'SGC-PRY-003':
+        return 'EjecucionyControldeProyectos';
+      case 'SGC-PRY-004':
+        return 'CierredeProyectos';
       default:
         return '';
     }
@@ -124,7 +149,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="flex items-center space-x-3">
-                <span className="text-sm font-medium text-gray-500">{document.code}</span>
+                <span className="text-sm font-medium text-gray-500">{document.id}</span>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   <CheckCircle2 className="w-3 h-3 mr-1" />
                   Aprobado
@@ -134,7 +159,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
             </div>
             <div className="text-right">
               <p className="text-sm font-medium text-gray-900">Rev. {document.revision || '1.0'}</p>
-              <p className="text-xs text-gray-500">Actualizado: {document.lastUpdated || '-'}</p>
+              <p className="text-xs text-gray-500">Actualizado: {document.updatedAt || '-'}</p>
             </div>
           </div>
 

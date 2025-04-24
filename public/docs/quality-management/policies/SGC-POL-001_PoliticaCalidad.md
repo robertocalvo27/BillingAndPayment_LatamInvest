@@ -2,51 +2,39 @@
 
 **Código:** SGC-POL-001  
 **Versión:** 1.0  
-**Fecha de Aprobación:** 2024-03-25  
-**Aprobado por:** Comité de Calidad  
-**Estado:** Vigente
+**Fecha de Aprobación:** 2023-12-15  
+**Aprobado por:** Comité de Dirección  
 
 ## Declaración de la Política
 
-En Bizflow Tech, nos comprometemos a proporcionar soluciones tecnológicas innovadoras y servicios de la más alta calidad que impulsen el éxito de nuestros clientes. Nuestra política de calidad se basa en los siguientes principios fundamentales:
+En Bizflow Tech, estamos comprometidos con la excelencia en todos nuestros servicios de desarrollo de software y consultoría tecnológica. Nuestra política de calidad establece el marco para crear soluciones innovadoras que superen las expectativas de nuestros clientes mientras mantenemos los más altos estándares de calidad.
 
-### 1. Excelencia Operativa
-- Mantener los más altos estándares de calidad en todos nuestros procesos y servicios
-- Implementar y mejorar continuamente nuestro Sistema de Gestión de Calidad
-- Asegurar la conformidad con los requisitos regulatorios y normativos aplicables
+## Nuestros Compromisos
 
-### 2. Enfoque al Cliente
-- Comprender y anticipar las necesidades de nuestros clientes
-- Proporcionar soluciones que generen valor agregado
-- Mantener una comunicación efectiva y transparente
+1. **Excelencia Operativa**: Nos comprometemos a implementar procesos estandarizados y metodologías ágiles que garanticen la entrega de productos y servicios de la más alta calidad.
 
-### 3. Mejora Continua
-- Establecer objetivos medibles de calidad y monitorear su cumplimiento
-- Fomentar la innovación y la adopción de mejores prácticas
-- Invertir en el desarrollo profesional de nuestro equipo
+2. **Agilidad y Adaptabilidad**: Mantenemos procesos flexibles que nos permiten adaptarnos rápidamente a los cambios tecnológicos y a las necesidades cambiantes del mercado.
 
-### 4. Gestión de Riesgos
-- Identificar y gestionar proactivamente los riesgos
-- Implementar controles efectivos
-- Asegurar la continuidad del negocio
+3. **Mejora Continua**: Revisamos y optimizamos constantemente nuestros procesos y metodologías, aprendiendo de cada proyecto para mejorar nuestro desempeño futuro.
+
+4. **Enfoque al Cliente**: Priorizamos la satisfacción del cliente, estableciendo relaciones de confianza y entendiendo profundamente sus necesidades para ofrecer soluciones personalizadas.
+
+5. **Transparencia**: Mantenemos comunicación clara y consistente con nuestros clientes y equipos internos sobre los procesos, avances y resultados.
 
 ## Objetivos de Calidad
 
-1. Mantener un índice de satisfacción del cliente superior al 95%
-2. Resolver el 90% de las incidencias en los tiempos establecidos
-3. Lograr una disponibilidad del servicio del 99.9%
-4. Completar el 100% de las auditorías internas programadas
-5. Alcanzar un 95% de cumplimiento en los indicadores de calidad
+1. Lograr una satisfacción del cliente superior al 95% en todas las entregas de proyectos.
+2. Reducir los defectos post-implementación en un 20% anual.
+3. Resolver el 90% de las incidencias reportadas dentro de los SLAs establecidos.
+4. Asegurar que el 100% de nuestros equipos reciban capacitación continua en nuevas tecnologías y metodologías.
+5. Implementar al menos 10 mejoras significativas en nuestros procesos anualmente basadas en retroalimentación y métricas de rendimiento.
 
-## Compromiso
-
-La alta dirección se compromete a:
-- Proporcionar los recursos necesarios para mantener y mejorar el SGC
-- Promover el enfoque basado en procesos y la toma de decisiones basada en evidencia
-- Asegurar la comunicación y entendimiento de esta política en todos los niveles de la organización
+Esta política de calidad es revisada anualmente por la Dirección General para asegurar su continua adecuación y eficacia. Es comunicada a todos los miembros de la organización y está disponible para las partes interesadas.
 
 ## Historial de Versiones
 
-| Versión | Fecha | Cambios Realizados | Aprobado por |
-|---------|-------|-------------------|--------------|
-| 1.0 | 2024-03-25 | Versión inicial | Comité de Calidad | 
+| Versión | Fecha | Descripción del Cambio | Autor |
+|---------|-------|------------------------|-------|
+| 1.0 | 2023-12-15 | Versión inicial de la Política de Calidad | Elena Gómez |
+| 0.9 | 2023-11-30 | Borrador para revisión del Comité | Carlos Mendoza |
+| 0.8 | 2023-11-15 | Documento preliminar | Sandra Torres | 
