@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../common/Tabs';
 import { Card } from '../common/Card';
 import {
@@ -12,8 +12,20 @@ import {
   Shield
 } from 'lucide-react';
 import DocumentManagement from './DocumentManagement';
+import { initializeQualityManagementData } from '../../data/quality-management/initialize';
+import { useQualityManagementStore } from '../../store/qualityManagementStore';
 
 const QualityDashboard: React.FC = () => {
+  const { documents } = useQualityManagementStore();
+  
+  // Inicializar datos solo si aún no hay documentos cargados
+  useEffect(() => {
+    if (documents.length === 0) {
+      initializeQualityManagementData();
+      console.log('Documentos de calidad inicializados');
+    }
+  }, [documents.length]);
+
   return (
     <div className="space-y-6 p-6">
       <div className="flex justify-between items-center">
