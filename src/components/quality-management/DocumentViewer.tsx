@@ -86,15 +86,19 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ documentCode, onBack })
       case 'SGC-PRY-004':
         return 'CierredeProyectos';
       case 'SGC-GR-001':
-        return 'IdentificacionRiesgos';
+        return 'GestionRiesgosProyectos';
       case 'SGC-GR-002':
-        return 'TratamientoRiesgos';
+        return 'AnalisisImpacto';
       case 'SGC-GR-003':
-        return 'GestionCrisis';
+        return 'PlanMitigacion';
       case 'SGC-GR-004':
         return 'MonitoreoRiesgos';
       case 'SGC-GR-005':
         return 'GestionRiesgosOperacionales';
+      case 'SGC-GR-002-SEG':
+        return 'GestionRiesgosSeguridad';
+      case 'SGC-GR-003-REG':
+        return 'GestionRiesgosRegulatorios';
       case 'SGC-QA-001':
         return 'GestionNoConformidades';
       case 'SGC-QA-002':

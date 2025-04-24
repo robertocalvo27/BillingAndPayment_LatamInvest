@@ -4,6 +4,7 @@ import { projectManagementDocs } from './documents/project-management';
 import { customerServiceDocs } from './documents/customer-service';
 import { qualityAssuranceDocs } from './documents/quality-assurance';
 import { resourceManagementDocs } from './documents/resource-management';
+import { riskManagementDocs } from './documents/risk-management';
 import { QualityDocument } from '../../types/quality-management';
 
 /**
@@ -20,6 +21,7 @@ export function initializeQualityManagementData(): void {
     ...customerServiceDocs,
     ...qualityAssuranceDocs,
     ...resourceManagementDocs,
+    ...riskManagementDocs,
     // Aquí se pueden agregar más documentos de otras categorías
   ];
   

@@ -3,8 +3,8 @@ import { QualityDocument } from "../../../types/quality-management";
 export const riskManagementDocs: QualityDocument[] = [
   {
     id: "SGC-GR-001",
-    title: "Identificación y Evaluación de Riesgos",
-    description: "Procedimiento para la identificación y evaluación sistemática de riesgos operacionales, financieros y estratégicos.",
+    title: "Gestión de Riesgos en Proyectos",
+    description: "Procedimiento para la identificación y gestión de riesgos en proyectos de desarrollo y tecnología.",
     type: "procedure",
     category: "risk_management",
     content: "",
@@ -14,8 +14,8 @@ export const riskManagementDocs: QualityDocument[] = [
   },
   {
     id: "SGC-GR-002",
-    title: "Tratamiento de Riesgos",
-    description: "Procedimiento que define metodologías para el tratamiento y mitigación de riesgos identificados.",
+    title: "Análisis de Impacto",
+    description: "Procedimiento para el análisis de impacto de riesgos identificados en los procesos de negocio.",
     type: "procedure",
     category: "risk_management",
     content: "",
@@ -25,8 +25,8 @@ export const riskManagementDocs: QualityDocument[] = [
   },
   {
     id: "SGC-GR-003",
-    title: "Gestión de Crisis",
-    description: "Procedimiento para la gestión efectiva de situaciones de crisis y continuidad del negocio.",
+    title: "Plan de Mitigación",
+    description: "Procedimiento para la elaboración y seguimiento de planes de mitigación de riesgos.",
     type: "procedure",
     category: "risk_management",
     content: "",
@@ -36,7 +36,7 @@ export const riskManagementDocs: QualityDocument[] = [
   },
   {
     id: "SGC-GR-004",
-    title: "Monitoreo y Control de Riesgos",
+    title: "Monitoreo de Riesgos",
     description: "Procedimiento para el seguimiento continuo y control efectivo de los riesgos identificados en la organización.",
     type: "procedure",
     category: "risk_management",
@@ -76,6 +76,28 @@ export const riskManagementDocs: QualityDocument[] = [
     content: "",
     revision: "1.1",
     updatedAt: "2023-05-12",
+    status: "approved"
+  },
+  {
+    id: "SGC-GR-002-SEG",
+    title: "Gestión de Riesgos de Seguridad",
+    description: "Procedimiento para la identificación, evaluación y mitigación de riesgos relacionados con la seguridad de la información y ciberseguridad.",
+    type: "procedure",
+    category: "risk_management",
+    content: "",
+    revision: "1.0",
+    updatedAt: "2023-05-15",
+    status: "approved"
+  },
+  {
+    id: "SGC-GR-003-REG",
+    title: "Gestión de Riesgos Regulatorios",
+    description: "Procedimiento para la identificación, evaluación y mitigación de riesgos relacionados con requisitos regulatorios y cumplimiento normativo.",
+    type: "procedure",
+    category: "risk_management",
+    content: "",
+    revision: "1.0",
+    updatedAt: "2023-05-18",
     status: "approved"
   }
 ];
